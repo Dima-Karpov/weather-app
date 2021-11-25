@@ -1,26 +1,19 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { FC } from 'react';
 
-function App() {
+import s from './App.module.css';
+import {AddItemForm} from './components/AddItemForm/AddItemForm';
+import {OneCity} from './components/AddItemForm/OneCity/OneCity';
+
+
+export const App: FC = (): any => {
+  const add = true;
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={s.App}>
+      <div>world</div>
+      {add}
+      <AddItemForm />
+      <OneCity/>
+      Hello
     </div>
   );
-}
-
-export default App;
+};
