@@ -1,6 +1,6 @@
-import {CityType, ResponseCityType} from "../../../api/apiService";
+import {CityType} from "../../../api/types/CityType";
 
-export const addCurrentCity = (newCity: any) =>
+export const addCurrentCity = (newCity: CityType) =>
   ({ type: 'city/ADD-CURRENT-CITY', newCity } as const);
 
 export const addCity = (newCity: CityType) =>

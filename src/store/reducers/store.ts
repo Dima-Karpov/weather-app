@@ -12,9 +12,9 @@ export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 
 export type AppStoreType = ReturnType<typeof rootReducer>;
 
-export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppStoreType, unknown, AppActionsType>
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppStoreType, unknown, AppActionsType>;
 
-export type AppActionsType = CityActionsType
+export type AppActionsType = CityActionsType;
 
 // чтобы можно было в консоли браузера обращаться к store в любой момент
 // @ts-ignore

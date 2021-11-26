@@ -1,28 +1,21 @@
-import {ChangeEvent, FC, FormEvent, useEffect, useState} from 'react';
-
+import {ChangeEvent, FC, FormEvent, memo, useState} from 'react';
 import {AddItemFormPropsType} from './types/AddItemFormPropsType';
-import {useDispatch} from 'react-redux';
-import {GetCityTC} from '../../store/reducers/cities-reducers';
-import {addCity} from '../../store/reducers/actions/cityAction';
 
 
-
-export const AddItemForm: FC<AddItemFormPropsType> = () => {
-  const [state, setState] = useState<any>({});
-  const dispatch = useDispatch();
+export const AddItemForm: FC<AddItemFormPropsType> = memo(({getCity, }) => {
+  const [city, setCity] = useState<string>('');
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setState({[e.target.name]: e.target.value});
-    console.log(state);
+    setCity(e.currentTarget.value);
   };
-
   const handleFromSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(addCity)
-    dispatch(GetCityTC({name: state.name}));
-    setState({name: ''});
+    if (city.trim() === '') {
+      return alert('hello Dima!')
+    }
+    getCity(city);
+    setCity('');
   };
-
 
   return (
     <div>
@@ -32,7 +25,7 @@ export const AddItemForm: FC<AddItemFormPropsType> = () => {
             placeholder="Enter city name"
             type="text"
             name="name"
-            value={state.name}
+            value={city}
             onChange={handleChange}
           />
           <button type='submit' >Add</button>
@@ -40,4 +33,4 @@ export const AddItemForm: FC<AddItemFormPropsType> = () => {
       </div>
     </div>
   );
-};
+});
