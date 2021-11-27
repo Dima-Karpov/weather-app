@@ -27,7 +27,6 @@ export const AddItemForm: FC<AddItemFormPropsType> = memo(({getCity, updateData,
     setOff(e.currentTarget.checked)
   }, [setOff]);
 
-  console.log('value checked', off);
 
   return (
     <div>

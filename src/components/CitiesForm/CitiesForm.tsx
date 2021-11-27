@@ -16,7 +16,6 @@ import {CityType} from '../../api/types/CityType';
 export const CitiesForm: FC = () => {
   const dispatch = useDispatch();
   const cities = useSelector<AppStoreType, CityType[]>(state => state.cities.cities);
-  const citiId = useSelector<AppStoreType, number | undefined>(state => state.cities.cities.find(city => city.id)?.id);
   const {lat, lon} = useGeoLocation();
 
   const getCity = useCallback((city: string) => dispatch(GetCityTC(city)), [dispatch]);
@@ -59,12 +58,6 @@ export const CitiesForm: FC = () => {
       citiesFromLocalStorage.forEach((city: CityType) => dispatch(addCity(city)));
     }
   }, [cities, lat, lon, dispatch]);
-
-
-
-  // })  // useInterval(() => {
-  //    updateData()
-  // }, 5000);
 
   return (
     <div>

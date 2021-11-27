@@ -1,4 +1,4 @@
-import {FC, memo} from 'react';
+import {FC, memo, useEffect, useState} from 'react';
 import s from './OneCity.module.css'
 
 import {OneCityPropsType} from './types/OneCityPropsType';
@@ -10,8 +10,22 @@ export const OneCity: FC<OneCityPropsType> = memo(({
 }) => {
   const cappedCity = name.charAt(0).toUpperCase() + name.slice(1);
 
+  const getTwoDigitsString = (num: number) => num < 10 ? "0" + num : num
+  
+  const [state, setState] = useState(new Date())
+
+  useEffect(() => {
+    setState(new Date())
+  }, [])
+
+  const secondsString = getTwoDigitsString(state.getSeconds())
+  const minutesString = getTwoDigitsString(state.getMinutes())
+  const hoursString = getTwoDigitsString(state.getHours())
+
+
   const removeCity = () => deletCity(id);
   const updateCity = () => updateCityData(id);
+
 
   return (
     <div className={s.oneCityBLock}>
@@ -35,6 +49,14 @@ export const OneCity: FC<OneCityPropsType> = memo(({
           <p>Humidity: {hum}%</p>
           <p>Pressure: {press} hpa</p>
           <p>Feels like: {Math.ceil(feel - 273.15)}°C</p>
+          <p>Last updated:
+            <span>{hoursString}</span>
+            :
+            <span>{minutesString}</span>
+            :
+            <span>{secondsString}</span>
+          </p>
+
         </>
         <div>WeatherIcon</div>
       </div>
