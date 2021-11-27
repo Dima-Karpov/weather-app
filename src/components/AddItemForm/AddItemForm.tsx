@@ -1,12 +1,12 @@
 import { ChangeEvent, FC, FormEvent, memo, useState, useCallback } from 'react';
 import {useInterval} from '../../hooks/useInterval';
+
 import {AddItemFormPropsType} from './types/AddItemFormPropsType';
 
 
 export const AddItemForm: FC<AddItemFormPropsType> = memo(({getCity, updateData, }) => {
   const [city, setCity] = useState<string>('');
   const [off, setOff] = useState<boolean>(false);
-
   useInterval(updateData, 5000, off);
 
   const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -22,11 +22,9 @@ export const AddItemForm: FC<AddItemFormPropsType> = memo(({getCity, updateData,
     setCity('');
   }, [getCity, city]);
 
-
   const handlerChangeInputRadio = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setOff(e.currentTarget.checked)
   }, [setOff]);
-
 
   return (
     <div>

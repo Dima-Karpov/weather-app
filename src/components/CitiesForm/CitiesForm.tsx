@@ -12,11 +12,13 @@ import {AddItemForm} from '../AddItemForm/AddItemForm';
 import {OneCity} from './../AddItemForm/OneCity/OneCity';
 
 import {CityType} from '../../api/types/CityType';
+import {useTime} from '../../hooks/useTime';
 
 export const CitiesForm: FC = () => {
   const dispatch = useDispatch();
   const cities = useSelector<AppStoreType, CityType[]>(state => state.cities.cities);
   const {lat, lon} = useGeoLocation();
+  const { setTime, sec, min, hour } = useTime();
 
   const getCity = useCallback((city: string) => dispatch(GetCityTC(city)), [dispatch]);
 
@@ -26,11 +28,15 @@ export const CitiesForm: FC = () => {
     dispatch(deleteCity(id));
   }, [dispatch, cities]);
 
-  const updateCityData = useCallback((id: number) => dispatch(GetCityIdTC(id)), [dispatch]);
+  const updateCityData = useCallback((id: number) => {
+    dispatch(GetCityIdTC(id));
+    setTime(new Date());
+  }, [dispatch, setTime]);
 
   const updateData = useCallback(() => {
     dispatch(UpdateCityTC());
-  }, [dispatch])
+    setTime(new Date());
+  }, [dispatch, setTime])
 
   const citiesMap = cities.map(({name, id, country, temp, hum, press, feel}) => cities.length === 0
     ? (<div className={s.message}>You have no saved cities</div>)
@@ -46,6 +52,9 @@ export const CitiesForm: FC = () => {
       feel={feel}
       deletCity={deleteExtraCity}
       updateCityData={updateCityData}
+      sec={sec}
+      min={min}
+      hour={hour}
     />
   );
 

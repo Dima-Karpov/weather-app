@@ -1,9 +1,6 @@
+import { useState } from 'react';
+import {LocationType} from './types/LocationType';
 
-import { useState, useEffect } from 'react';
-
-type LocationType = {
-  coordinates: {lat: number, lon: number}
-}
 
 export const useGeoLocation = () => {
   const [location, setLocation] = useState<LocationType>({
@@ -18,10 +15,7 @@ export const useGeoLocation = () => {
       },
     });
   };
-
-  // useEffect(() => {
     navigator.geolocation.getCurrentPosition(onSuccess);
-  // }, [location]);
 
   return {
     lat: location.coordinates.lat,
