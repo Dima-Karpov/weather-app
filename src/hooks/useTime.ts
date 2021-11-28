@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export const useTime = () => {
   const [time, setTime] = useState(new Date());
@@ -7,6 +7,9 @@ export const useTime = () => {
   const secondsString = getTwoDigitsString(time.getSeconds());
   const minutesString = getTwoDigitsString(time.getMinutes());
   const hoursString = getTwoDigitsString(time.getHours());
+
+  // useEffect(() => setTime(new Date()), [])
+
   return {
     setTime,
     sec: secondsString,

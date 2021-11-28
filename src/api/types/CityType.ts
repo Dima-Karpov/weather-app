@@ -6,4 +6,11 @@ export type CityType = {
   hum: number;
   press: number;
   feel: number;
+  iconId: string;
+  vertSpeed: number;
+  deg: number;
+
+    hour: number | string,
+    min: number | string,
+    sec: number | string,
 };

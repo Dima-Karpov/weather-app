@@ -29,19 +29,11 @@ export type ResponseCityType = {
   };
   timezone: number;
   visibility: number;
-  weather:
-  [
+  weather: [
     {
       id: number, main: string, description: string, icon: string,
     },
   ];
-  0:
-  {
-    id: number;
-    main: string;
-    description: string;
-    icon: string;
-  };
   wind: {
     speed: number;
     deg: number;

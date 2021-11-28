@@ -4,7 +4,8 @@
 }
 
 .cityCard {
-	background-color: white;
+	/* background-color: white; */
+	background-color: aqua;
 	border: solid 1px #79807b;
 	border-radius: 5px;
 	line-height: 1.3;
@@ -18,18 +19,16 @@
 	margin: 10px;
 }
 
-
 .cityName {
 	font-size: 24px;
 	font-weight: bold;
 }
-.buttonBlock{
+.buttonBlock {
 	width: 100%;
 	/* border: red 1px solid; */
-	display:flex;
+	display: flex;
 	justify-content: space-between;
 }
-
 
 .remove {
 	color: #79807b;
@@ -38,7 +37,7 @@
 	float: right;
 	margin: 5px 5px 0 0;
 	cursor: pointer;
-} 
+}
 .update {
 	color: #79807b;
 	background-color: transparent;
@@ -46,4 +45,20 @@
 	float: right;
 	margin: 5px 5px 0 0;
 	cursor: pointer;
-} 
+}
+
+.st {
+	display: flex;
+	align-items: center;
+}
+.st span {
+	display: block;
+	margin-left: 5px;
+}
+
+.stT {
+	/* display: flex;
+	background-repeat: no-repeat, repeat;
+	background-size: 1.5em auto, 100%; */
+	/* background-image: url('../../../assets/pngwing.png'); */
+}

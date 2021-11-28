@@ -1,7 +1,9 @@
 import {cityAPI} from '../../api/apiService';
 import {CityType} from '../../api/types/CityType';
-import {addCity, addCurrentCity} from './actions/cityAction';
+
+import { addCity, addCurrentCity, updateCity } from './actions/cityAction';
 import {CityActionsType} from './actions/types/CityActionsType';
+
 import {AppThunk} from './store';
 
 const initialState = {
@@ -53,6 +55,17 @@ export const CitiesReducers = (
         cityShown: false,
       }
     }
+    case 'city/UDATE-CITY':
+      if (state.cities.find(({id}) => id === action.city.id)){
+        return (
+          {
+            ...state,
+            cities: state.cities.map(city => (city.id === action.city.id) ? action.city : city)
+          }
+        )
+      }
+      return state
+     
     case 'city/DELETE-CITY':
       const newCities = state.cities.filter((city) => action.id !== city.id);
       return {
@@ -73,7 +86,7 @@ export const CitiesReducers = (
 
 
 // thunks
-export const GetCityTC = (cityName: string): AppThunk => async (dispatch) => {
+export const GetCityTC = (cityName: string, sec: number | string, min: number | string, hour: number | string): AppThunk => async (dispatch) => {
   try
   {
     // dispatch(setAppStatusAC('loading'));
@@ -91,35 +104,13 @@ export const GetCityTC = (cityName: string): AppThunk => async (dispatch) => {
         hum: res.data.main.humidity,
         press: res.data.main.pressure,
         feel: res.data.main.feels_like,
-      }))
-    }
+        iconId: res.data.weather[0].icon,
+        vertSpeed: res.data.wind.speed,
+        deg: res.data.wind.deg,
 
-    // dispatch(setAppStatusAC('succeeded'));
-  } catch (e: any)
-  {
-    const error = e.res ? e.res.data.error : (e.message + ', Problem - coordinates not found');
-    console.log(error);
-    // dispatch(setAppStatusAC("failed"));
-  }
-};
-export const GetCityIdTC = (cityId: number): AppThunk => async (dispatch) => {
-  try
-  {
-    // dispatch(setAppStatusAC('loading'));
-    const res = await cityAPI.getWeatherById(cityId)
-    if (res.data.cod === 404 || res.data.cod === 400)
-    {
-      console.log('input error')
-    } else
-    {
-      dispatch(addCity({
-        id: res.data.id,
-        name: res.data.name,
-        country: res.data.sys.country,
-        temp: res.data.main.temp,
-        hum: res.data.main.humidity,
-        press: res.data.main.pressure,
-        feel: res.data.main.feels_like,
+        hour: hour,
+        min: min,
+        sec: sec,
       }));
     }
 
@@ -131,7 +122,43 @@ export const GetCityIdTC = (cityId: number): AppThunk => async (dispatch) => {
     // dispatch(setAppStatusAC("failed"));
   }
 };
-export const AddCurrentCityTC = (lat: number, lon: number): AppThunk => async (dispatch) => {
+export const GetCityIdTC = (cityId: number, sec: number | string, min: number | string, hour: number | string): AppThunk => async (dispatch) => {
+  try
+  {
+    // dispatch(setAppStatusAC('loading'));
+    const res = await cityAPI.getWeatherById(cityId)
+    if (res.data.cod === 404 || res.data.cod === 400)
+    {
+      console.log('input error')
+    } else
+    {
+      dispatch(updateCity({
+        id: res.data.id,
+        name: res.data.name,
+        country: res.data.sys.country,
+        temp: res.data.main.temp,
+        hum: res.data.main.humidity,
+        press: res.data.main.pressure,
+        feel: res.data.main.feels_like,
+        iconId: res.data.weather[0].icon,
+        vertSpeed: res.data.wind.speed,
+        deg: res.data.wind.deg,
+  
+          hour: hour,
+          min: min,
+          sec: sec,
+      }));
+    }
+
+    // dispatch(setAppStatusAC('succeeded'));
+  } catch (e: any)
+  {
+    const error = e.res ? e.res.data.error : (e.message + ', Problem - coordinates not found');
+    console.log(error);
+    // dispatch(setAppStatusAC("failed"));
+  }
+};
+export const AddCurrentCityTC = (lat: number, lon: number, sec: number | string, min: number | string, hour: number | string): AppThunk => async (dispatch) => {
   try
   {
     // dispatch(setAppStatusAC('loading'));
@@ -144,6 +171,12 @@ export const AddCurrentCityTC = (lat: number, lon: number): AppThunk => async (d
       hum: res.data.main.humidity,
       press: res.data.main.pressure,
       feel: res.data.main.feels_like,
+      iconId: res.data.weather[0].icon,
+      vertSpeed: res.data.wind.speed,
+      deg: res.data.wind.deg,
+      hour: hour,
+      min: min,
+      sec: sec,
     }))
 
     // dispatch(setAppStatusAC('succeeded'));
@@ -155,22 +188,19 @@ export const AddCurrentCityTC = (lat: number, lon: number): AppThunk => async (d
   }
 };
 
-export const UpdateCityTC = (): AppThunk => async (dispatch, getState) => {
+export const UpdateCityTC = (sec: number | string, min: number | string, hour: number | string): AppThunk => async (dispatch, getState) => {
   const res: any = [];
   const state = getState().cities.cities;
   const cityId: number[] = state.map(city => city.id);
-  try
-  {
+  try {
     // dispatch(setAppStatusAC('loading'));
     cityId.forEach(async (elem) => {
       await cityAPI.getWeatherById(elem)
     });
-    if (res.data.cod === 404 || res.data.cod === 400)
-    {
+    if (res.data.cod === 404 || res.data.cod === 400) {
       console.log('input error')
-    } else
-    {
-      dispatch(addCity({
+    } else {
+      dispatch(updateCity({
         id: res.data.id,
         name: res.data.name,
         country: res.data.sys.country,
@@ -178,12 +208,17 @@ export const UpdateCityTC = (): AppThunk => async (dispatch, getState) => {
         hum: res.data.main.humidity,
         press: res.data.main.pressure,
         feel: res.data.main.feels_like,
+        iconId: res.data.weather[0].icon,
+        vertSpeed: res.data.wind.speed,
+        deg: res.data.wind.deg,
+        hour: hour,
+        min: min,
+        sec: sec,
       }));
     }
 
     // dispatch(setAppStatusAC('succeeded'));
-  } catch (e: any)
-  {
+  } catch (e: any) {
     const error = e.res ? e.res.data.error : (e.message + ', Problem - coordinates not found');
     console.log(error);
     // dispatch(setAppStatusAC("failed"));

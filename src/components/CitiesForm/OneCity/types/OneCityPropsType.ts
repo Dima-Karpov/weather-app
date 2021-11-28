@@ -6,9 +6,12 @@ export type OneCityPropsType = {
   hum: number;
   press: number;
   feel: number;
+  iconId: string;
+  vertSpeed: number;
+  deg: number
   deletCity: (id: number) => void;
   updateCityData: (id: number) => void;
-  sec: number | string;
-  min: number | string;
-  hour: number | string;
-};
+    hour: string | number;
+    min: string | number;
+    sec: string | number;
+}
