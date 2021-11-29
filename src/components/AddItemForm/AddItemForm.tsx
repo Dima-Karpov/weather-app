@@ -1,48 +1,44 @@
 import { ChangeEvent, FC, FormEvent, memo, useState, useCallback } from 'react';
-import {useInterval} from '../../hooks/useInterval';
+import { AddItemFormPropsType } from './types/AddItemFormPropsType';
 
-import {AddItemFormPropsType} from './types/AddItemFormPropsType';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
+import { EmtiString } from '../../constans';
 
-export const AddItemForm: FC<AddItemFormPropsType> = memo(({getCity, updateData, }) => {
-  const [city, setCity] = useState<string>('');
-  const [off, setOff] = useState<boolean>(false);
-  useInterval(updateData, 5000, off);
+export const AddItemForm: FC<AddItemFormPropsType> = memo(({getCity}) => {
+  const [city, setCity] = useState<string>(EmtiString);
 
   const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setCity(e.currentTarget.value);
   }, [setCity]);
+
   const handleFromSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (city.trim() === '')
-    {
-      return alert('hello!')
+
+    if (city.trim() === EmtiString) {
+      return alert('Enter City name!');
     }
     getCity(city);
-    setCity('');
-  }, [getCity, city]);
+    setCity(EmtiString);
 
-  const handlerChangeInputRadio = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setOff(e.currentTarget.checked)
-  }, [setOff]);
+  }, [getCity, city]);
 
   return (
     <div>
       <div>
         <form onSubmit={handleFromSubmit}>
-          <input
-            placeholder="Enter city name"
-            type="text"
-            name="name"
+          <TextField
             value={city}
             onChange={handleChange}
+            label="City name"
+            variant={'outlined'}
           />
-          <button type='submit' >Add</button>
-          <input
-            type='checkbox'
-            onChange={handlerChangeInputRadio}
-            checked={off}
-          />
+          <Button
+            style={{marginLeft: "5px"}}
+            color={'primary'}
+            type='submit'
+          >Add</Button>
         </form>
       </div>
     </div>

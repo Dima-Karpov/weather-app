@@ -1,62 +1,49 @@
-import {cityAPI} from '../../api/apiService';
-import {CityType} from '../../api/types/CityType';
+import { cityAPI } from '../../api/apiService';
+import { CityType } from '../../api/types/CityType';
 
 import { addCity, addCurrentCity, updateCity } from './actions/cityAction';
-import {CityActionsType} from './actions/types/CityActionsType';
+import { CityActionsType } from './actions/types/CityActionsType';
 
-import {AppThunk} from './store';
+import { AppThunk } from '../store';
+import {setStatus} from './actions/appAction';
 
 const initialState = {
   cities: [],
-  loading: false,
-  cityShown: false,
-  geolocalised: true,
 };
 type InitialStateType = {
-  cities: CityType[]
-  loading: boolean
-  cityShown: boolean
-  geolocalised: boolean
-}
+  cities: CityType[];
+};
 
-export const CitiesReducers = (
+export const citiesReducer = (
   state: InitialStateType = initialState,
   action: CityActionsType): InitialStateType => {
-  switch (action.type)
-  {
+  switch (action.type) {
     case 'city/ADD-CURRENT-CITY': {
-      if (state.cities.find(({id}) => id === action.newCity.id))
-      {
-        return {
-          ...state, geolocalised: true
-        };
+      if (state.cities.find(({id}) => id === action.newCity.id)) {
+        return { ...state };
       }
       const copyCities = [...state.cities, action.newCity];
       return {
         ...state,
         cities: copyCities,
-        loading: false,
-        cityShown: false,
       };
-    }
+    };
+
     case 'city/ADD-CITY': {
-      if (state.cities.find(({id}) => id === action.newCity.id))
-      {
+      if (state.cities.find(({id}) => id === action.newCity.id)) {
         return {
           ...state,
-          cityShown: true,
         };
-      }
+      };
       const copyCities: CityType[] = [...state.cities, action.newCity];
       return {
         ...state,
         cities: copyCities,
-        loading: false,
-        cityShown: false,
       }
-    }
+    };
+
     case 'city/UDATE-CITY':
-      if (state.cities.find(({id}) => id === action.city.id)){
+      if (state.cities.find(({id}) => id === action.city.id)) {
         return (
           {
             ...state,
@@ -64,38 +51,30 @@ export const CitiesReducers = (
           }
         )
       }
-      return state
-     
+      return state;
+
     case 'city/DELETE-CITY':
       const newCities = state.cities.filter((city) => action.id !== city.id);
       return {
         ...state,
         cities: newCities,
-        cityShown: false,
       };
-
-    case 'city/LOADING-CITIES':
-      return {
-        ...state,
-        loading: true,
-      };
+   
     default:
       return state;
-  }
+  };
 };
 
 
 // thunks
 export const GetCityTC = (cityName: string, sec: number | string, min: number | string, hour: number | string): AppThunk => async (dispatch) => {
-  try
-  {
-    // dispatch(setAppStatusAC('loading'));
-    const res = await cityAPI.getWeatherByName(cityName)
-    if (res.data.cod === 404 || res.data.cod === 400)
-    {
-      console.log('input error')
-    } else
-    {
+  try {
+    dispatch(setStatus('loading'));
+    const res = await cityAPI.getWeatherByName(cityName);
+
+    if (res.data.cod === 404 || res.data.cod === 400) {
+      console.log('input error');
+    } else {
       dispatch(addCity({
         id: res.data.id,
         name: res.data.name,
@@ -107,31 +86,26 @@ export const GetCityTC = (cityName: string, sec: number | string, min: number | 
         iconId: res.data.weather[0].icon,
         vertSpeed: res.data.wind.speed,
         deg: res.data.wind.deg,
-
         hour: hour,
         min: min,
         sec: sec,
       }));
-    }
-
-    // dispatch(setAppStatusAC('succeeded'));
-  } catch (e: any)
-  {
+      dispatch(setStatus('succeeded'));
+    };
+  } catch (e: any) {
     const error = e.res ? e.res.data.error : (e.message + ', Problem - coordinates not found');
     console.log(error);
-    // dispatch(setAppStatusAC("failed"));
+    dispatch(setStatus('failed'));
   }
 };
+
 export const GetCityIdTC = (cityId: number, sec: number | string, min: number | string, hour: number | string): AppThunk => async (dispatch) => {
-  try
-  {
-    // dispatch(setAppStatusAC('loading'));
+  try {
+    dispatch(setStatus('loading'));
     const res = await cityAPI.getWeatherById(cityId)
-    if (res.data.cod === 404 || res.data.cod === 400)
-    {
+    if (res.data.cod === 404 || res.data.cod === 400) {
       console.log('input error')
-    } else
-    {
+    } else {
       dispatch(updateCity({
         id: res.data.id,
         name: res.data.name,
@@ -143,25 +117,22 @@ export const GetCityIdTC = (cityId: number, sec: number | string, min: number | 
         iconId: res.data.weather[0].icon,
         vertSpeed: res.data.wind.speed,
         deg: res.data.wind.deg,
-  
-          hour: hour,
-          min: min,
-          sec: sec,
+        hour: hour,
+        min: min,
+        sec: sec,
       }));
     }
-
-    // dispatch(setAppStatusAC('succeeded'));
-  } catch (e: any)
-  {
+    dispatch(setStatus('succeeded'));
+  } catch (e: any) {
     const error = e.res ? e.res.data.error : (e.message + ', Problem - coordinates not found');
     console.log(error);
-    // dispatch(setAppStatusAC("failed"));
+    dispatch(setStatus('failed'));
   }
 };
+
 export const AddCurrentCityTC = (lat: number, lon: number, sec: number | string, min: number | string, hour: number | string): AppThunk => async (dispatch) => {
-  try
-  {
-    // dispatch(setAppStatusAC('loading'));
+  try {
+    dispatch(setStatus('loading'));
     const res = await cityAPI.getWeatherByCoordinates(lat, lon)
     dispatch(addCurrentCity({
       id: res.data.id,
@@ -177,14 +148,12 @@ export const AddCurrentCityTC = (lat: number, lon: number, sec: number | string,
       hour: hour,
       min: min,
       sec: sec,
-    }))
-
-    // dispatch(setAppStatusAC('succeeded'));
-  } catch (e: any)
-  {
+    }));
+    dispatch(setStatus('succeeded'));
+  } catch (e: any) {
     const error = e.res ? e.res.data.error : (e.message + ', Problem - coordinates not found');
     console.log(error);
-    // dispatch(setAppStatusAC("failed"));
+    dispatch(setStatus('failed'));
   }
 };
 
@@ -193,7 +162,7 @@ export const UpdateCityTC = (sec: number | string, min: number | string, hour: n
   const state = getState().cities.cities;
   const cityId: number[] = state.map(city => city.id);
   try {
-    // dispatch(setAppStatusAC('loading'));
+    dispatch(setStatus('loading'));
     cityId.forEach(async (elem) => {
       await cityAPI.getWeatherById(elem)
     });
@@ -215,12 +184,11 @@ export const UpdateCityTC = (sec: number | string, min: number | string, hour: n
         min: min,
         sec: sec,
       }));
+      dispatch(setStatus('succeeded'));
     }
-
-    // dispatch(setAppStatusAC('succeeded'));
   } catch (e: any) {
     const error = e.res ? e.res.data.error : (e.message + ', Problem - coordinates not found');
     console.log(error);
-    // dispatch(setAppStatusAC("failed"));
+    dispatch(setStatus('failed'));
   }
 };

@@ -1,7 +1,6 @@
 import axios from 'axios'
 import {ResponseCityType} from './types/ResponseCityType';
 
-// const KEY_URL = 'b702314ab6fb64cab3519c6f2aa8fa23';
 const KEY_URL = '15860a445514fbd8dd267901c057961c';
 
 // https://cors-anywhere.herokuapp.com/

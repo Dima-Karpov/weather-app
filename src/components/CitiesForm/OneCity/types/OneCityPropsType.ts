@@ -14,4 +14,4 @@ export type OneCityPropsType = {
     hour: string | number;
     min: string | number;
     sec: string | number;
-}
+};

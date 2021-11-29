@@ -1,4 +1,7 @@
 .message {
 	margin-top: 100px;
 }
-
+.checkBlock {
+	width: 40%;
+	border: solid 2px #79807b;
+}

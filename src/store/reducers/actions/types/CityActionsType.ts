@@ -6,3 +6,4 @@ export type CityActionsType =
   | ReturnType<typeof deleteCity>
   | ReturnType<typeof loadingCities>
   | ReturnType<typeof updateCity>
+  

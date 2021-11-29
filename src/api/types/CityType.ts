@@ -10,7 +10,7 @@ export type CityType = {
   vertSpeed: number;
   deg: number;
 
-    hour: number | string,
-    min: number | string,
-    sec: number | string,
+  hour: number | string,
+  min: number | string,
+  sec: number | string,
 };
