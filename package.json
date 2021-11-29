@@ -2,6 +2,7 @@
   "name": "weather-app-t",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://Dima-Karpov.github.io/weather-app",
   "dependencies": {
     "@emotion/react": "^11.7.0",
     "@emotion/styled": "^11.6.0",
@@ -30,7 +31,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "yarn run build",
+    "deplou": "gh-pages -b master -d build" 
   },
   "eslintConfig": {
     "extends": [
