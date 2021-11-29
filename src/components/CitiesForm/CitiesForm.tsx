@@ -22,7 +22,7 @@ import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import {pink} from '@mui/material/colors';
 
-import {localStorageCities} from '../../constans';
+import {intervalTime, localStorageCities} from '../../constans';
 
 export const CitiesForm: FC = () => {
   const dispatch = useDispatch();
@@ -83,7 +83,7 @@ export const CitiesForm: FC = () => {
         </Paper>
       </Grid>
   );
-  useInterval(updateData, 5000, offChecked);
+  useInterval(updateData, intervalTime, offChecked);
 
   useEffect(() => {
     setTime(new Date());
